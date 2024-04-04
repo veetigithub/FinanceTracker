@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Log In</h1>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h1>Hello @(User.Identity.Name), my man!!!???</h1>
+        @if (User.IsInRole("admin"))
+        {
+            <button style="background-color: red">seenennnndd</button>
+        }
+        <form asp-controller="Login" asp-action="Logout">
+            <input type="submit" value="Logout" />
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Login" asp-action="Index">
+            <input name="name" placeholder="Username" />
+            <input type="submit" value="Log in" />
+        </form>
+    }
+</div>

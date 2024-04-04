@@ -1,9 +1,11 @@
 using FinanceTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace FinanceTracker.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,7 +19,7 @@ namespace FinanceTracker.Controllers
         {
             return View();
         }
-
+        [Authorize(Policy = "AdminAccess")]
         public IActionResult Privacy()
         {
             return View();
