@@ -9,14 +9,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login";
-        options.AccessDeniedPath = "/Login/Logout";
+        options.AccessDeniedPath = "/Home";
         options.LogoutPath = "/";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.Cookie.Name = "keksi";
     });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminAccess", policy =>
+    options.AddPolicy("OnlyAdminAccess", policy =>
     {
         policy.RequireAssertion(context =>
         (context.User.Identity.IsAuthenticated) && context.User.IsInRole("admin"));

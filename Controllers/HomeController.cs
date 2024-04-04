@@ -19,7 +19,7 @@ namespace FinanceTracker.Controllers
         {
             return View();
         }
-        [Authorize(Policy = "AdminAccess")]
+        [Authorize(Policy = "OnlyAdminAccess")]
         public IActionResult Privacy()
         {
             return View();
