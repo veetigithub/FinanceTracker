@@ -1,0 +1,29 @@
+﻿<h2>Partial site, received number @ViewData["number"]</h2>
+
+<button class="action-btn" id="first">first</button>
+<button class="action-btn" id="second">second</button>
+<button class="action-btn" id="third">third</button>
+
+<div id="render-container">
+    <partial name="_FirstPage" view-data="ViewData" />
+</div>
+<script>
+    $(".action-btn").on("click", function () {
+        var number = @(ViewData["number"]);
+        var target = "";
+        if (this.id == "first") { target = "_FirstPage"; }
+        else if (this.id == "second") {target="_SecondPage" }
+        else if (this.id == "third") { target = "_ThirdPage" }
+        if (target.length > 0) {
+            $.ajax({
+                type: "post",
+                data: "number="+number,
+                url: "/Partial/" + target,
+                success: function (data) {
+                    console.log(data)
+                    $("#render-container").html(data);
+                }
+            });
+        }
+    });
+</script>

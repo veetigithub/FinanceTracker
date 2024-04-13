@@ -1,0 +1,16 @@
+﻿<p>@ViewData["jsonbobit"]</p>
+<button class="zizon">send to backend</button>
+
+<script>
+    var zizonPackage = @Html.Raw($"'{ViewData["jsonbobit"]}'");
+    $(".zizon").on("click", function () {
+        $.ajax({
+            type: "post",
+            data: "package=" + zizonPackage,
+            url: "/Partial/ReceiveData",
+            success: function (data) {
+                alert(data);
+            }
+        });
+    })
+</script>
