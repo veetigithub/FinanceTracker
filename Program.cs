@@ -1,3 +1,4 @@
+using FinanceTracker.Controllers;
 using FinanceTracker.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 Register.Initialize(builder.Configuration);
+AddExpense.Initialize(builder.Configuration);
+LoginController.Initialize(builder.Configuration);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

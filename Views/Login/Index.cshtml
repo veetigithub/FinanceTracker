@@ -2,25 +2,26 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Log In</h1>
+<h2>Login</h2>
+<br />
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        <h1>Hello @(User.Identity.Name), my man!!!???</h1>
-        @if (User.IsInRole("admin"))
-        {
-            <button style="background-color: red">seenennnndd</button>
-        }
-        <form asp-controller="Login" asp-action="Logout">
-            <input type="submit" value="Logout" />
-        </form>
-    }
-    else
-    {
-        <form asp-controller="Login" asp-action="Index">
-            <input name="name" placeholder="Username" />
-            <input type="submit" value="Log in" />
-        </form>
-    }
-</div>
+@if(User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Login" asp-action="Logout">
+        <button type="submit" class="btn btn-primary">Logout</button>
+    </form>
+
+}else
+{
+    <form asp-controller="Login" asp-action="Index" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="Username" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="Password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+}

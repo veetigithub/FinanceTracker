@@ -1,9 +1,8 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 
 namespace FinanceTracker.Models
 {
-    public class Register
+    public class AddExpense
     {
         private static string? DATABASE_NAME;
         private static string? HOST;
@@ -26,18 +25,18 @@ namespace FinanceTracker.Models
             database = client.GetDatabase(DATABASE_NAME);
         }
 
-        public static T RegisterUser<T>(T record) where T : class
+        public static T AddExpenses<T>(T record) where T : class
         {
             try
             {
                 var collection = database.GetCollection<T>(typeof(T).Name);
-                var usernameProperty = typeof(T).GetProperty("Username");
+                var DateProperty = typeof(T).GetProperty("Date");
 
-                if (usernameProperty != null)
+                if (DateProperty != null)
                 {
-                    var usernameValue = usernameProperty.GetValue(record);
+                    var DateValue = DateProperty.GetValue(record);
 
-                    var filter = Builders<T>.Filter.Eq("Username", usernameValue);
+                    var filter = Builders<T>.Filter.Eq("Date", DateValue);
 
                     var existingRecord = collection.Find(filter).FirstOrDefault();
                     if (existingRecord != null)

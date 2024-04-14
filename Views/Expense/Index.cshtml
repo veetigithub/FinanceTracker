@@ -1,0 +1,26 @@
+﻿@* <h2>Partial site, received number @ViewData["number"]</h2> *@
+
+<button class="nav-btn" data-target="_FirstPage">First Page</button>
+<button class="nav-btn" data-target="_SecondPage">Second Page</button>
+<button class="nav-btn" data-target="_ThirdPage">Third Page</button>
+
+<div id="render-container">
+    <partial name="_FirstPage" />
+</div>
+<script>
+    $(document).ready(function () {
+        $(".nav-btn").on("click", function () {
+            var target = $(this).data("target");
+            $.ajax({
+                type: "post",
+                url: "/Expense/" + target,
+                success: function (data) {
+                    $("#render-container").html(data);
+                },
+                error: function () {
+                    alert("Error loading page.");
+                }
+            });
+        });
+    });
+</script>
