@@ -55,6 +55,7 @@ namespace FinanceTracker.Models
             {
                 Console.WriteLine("Nyt kämähti :(  " + err.Message);
             }
+            Console.WriteLine("jiiihaaa");
             return record;
         }
     }

@@ -62,15 +62,12 @@ namespace FinanceTracker.Controllers
 
         private bool IsValidUser(string username, string password)
         {
-            // Implement logic to validate the username and password against the database
-            // For example, query the database to check if the username and password match a user record
-            // Return true if the user is valid, otherwise return false
             if (database == null)
             {
                 Initialize(config);
             }
 
-            // Query the database for a user with the provided username
+            // Query the database for a document with the provided username
             var usersCollection = database.GetCollection<Registration>("Registration");
             var filter = Builders<Registration>.Filter.Eq(u => u.Username, username);
             var user = usersCollection.Find(filter).FirstOrDefault();
@@ -81,7 +78,7 @@ namespace FinanceTracker.Controllers
                 return false;
             }
 
-            // Check if the provided password matches the stored password
+            // Check if the provided password matches the password of the found document
             if (user.Password == password)
             {
                 return true;

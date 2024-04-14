@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FinanceTracker.Controllers
 {
@@ -20,10 +21,11 @@ namespace FinanceTracker.Controllers
                 {
                     Description = model.Description,
                     Amount = model.Amount,
-                    Date = DateTime.Now, // You may want to change this to allow users to specify the date
+                    Date = model.Date, // You may want to change this to allow users to specify the date
                     CategoryId = model.CategoryId,
                     Category = model.Category
                 };
+                Console.WriteLine(model.Date);
                 AddExpense.AddExpenses(expense); // Implement method to save expense to database
                 return PartialView(model); // Redirect to home page or another appropriate page
             }
