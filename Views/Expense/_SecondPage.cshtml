@@ -1,29 +1,37 @@
 ﻿@model List<FinanceTracker.Models.Expense>
 
 <h1>second page</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Category</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var expense in Model)
-        {
+@if (User.Identity.IsAuthenticated)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@expense.Description</td>
-                <td>@expense.Amount €</td>
-                <td>@expense.Date.ToShortDateString()</td>
-                <td>@expense.Category</td>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Category</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var expense in Model)
+            {
+                <tr>
+                    <td>@expense.Description</td>
+                    <td>@expense.Amount €</td>
+                    <td>@expense.Date.ToShortDateString()</td>
+                    <td>@expense.Category</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart" width="400" height="400"></canvas>
+}
+else
+{
+    <h2>You have to login to add expenses</h2>
+}
+
 
 <script>
     // Prepare data (replace this with your actual data)
@@ -48,11 +56,9 @@
         data: data,
         options: {
             scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+                y: {
+                    beginAtZero: true
+                }
             }
         }
     });

@@ -1,16 +1,74 @@
-﻿<p>@ViewData["jsonbobit"]</p>
-<button class="zizon">send to backend</button>
+﻿@using System.Text.Json
+@model List<FinanceTracker.Models.Expense>
+
+@{
+    // Serialize expenses to JSON
+    var jsonExpenses = JsonSerializer.Serialize(Model);
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="monthlyDataContainer">
+        <!-- Monthly data will be dynamically added here -->
+    </div>
+}
+else
+{
+    <h2>You have to login to add expenses</h2>
+}
 
 <script>
-    var zizonPackage = @Html.Raw($"'{ViewData["jsonbobit"]}'");
-    $(".zizon").on("click", function () {
-        $.ajax({
-            type: "post",
-            data: "package=" + zizonPackage,
-            url: "/Partial/ReceiveData",
-            success: function (data) {
-                alert(data);
-            }
-        });
-    })
+    // Deserialize JSON expenses
+    try {
+        expenses = @Html.Raw(jsonExpenses);
+        // Output the deserialized object for debugging
+        console.log("Deserialized Expenses:", expenses);
+    } catch (error) {
+        console.error("Error deserializing expenses:", error);
+    }
+
+    // Calculate daily expense rate per month
+    var monthlyExpenses = {};
+
+    // Group expenses by month
+    expenses.forEach(function (expense) {
+        var date = new Date(expense.Date);
+        var monthYearKey = date.getFullYear() + '-' + (date.getMonth() + 1);
+        if (!monthlyExpenses[monthYearKey]) {
+            monthlyExpenses[monthYearKey] = [];
+        }
+        monthlyExpenses[monthYearKey].push(expense.Amount);
+    });
+
+    // Calculate total expenses and daily expense rate for each month
+    var monthlyData = [];
+    for (var key in monthlyExpenses) {
+        if (monthlyExpenses.hasOwnProperty(key)) {
+            var expenses = monthlyExpenses[key];
+            var totalExpenses = expenses.reduce(function (a, b) { return a + b; }, 0);
+            var dateParts = key.split('-');
+            var monthName = new Date(dateParts[0], dateParts[1] - 1, 1).toLocaleString('default', { month: 'long' });
+            var daysInMonth = new Date(dateParts[0], dateParts[1], 0).getDate();
+            var dailyExpenseRate = totalExpenses / daysInMonth;
+            monthlyData.push({ month: monthName, dailyExpenseRate: dailyExpenseRate.toFixed(2) });
+        }
+    }
+
+    // Log the calculated data (you can remove this in production)
+    console.log('Monthly Data:', monthlyData);
+
+    // Get the container element
+    var container = document.getElementById('monthlyDataContainer');
+
+    // Iterate over the monthly data and create HTML elements to display it
+    monthlyData.forEach(function (monthData) {
+        // Create a new div element for each month
+        var monthDiv = document.createElement('div');
+
+        // Set the text content of the div to display the month and daily expense rate
+        monthDiv.textContent = monthData.month + ': Daily Expense Rate - ' + monthData.dailyExpenseRate + " €";
+
+        // Append the new div to the container
+        container.appendChild(monthDiv);
+    });
 </script>

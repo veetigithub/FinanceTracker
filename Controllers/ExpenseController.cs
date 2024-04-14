@@ -63,6 +63,15 @@ namespace FinanceTracker.Controllers
         [HttpPost]
         public IActionResult _ThirdPage()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.Identity.Name;
+                var expensesOfUser = new GetExpense();
+
+                // Retrieve expenses for the user
+                var expenses = expensesOfUser.GetExpensesOfUser(userId);
+                return PartialView(expenses);
+            }
             return PartialView();
         }
     }
