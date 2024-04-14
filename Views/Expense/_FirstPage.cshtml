@@ -1,30 +1,38 @@
 ﻿@model FinanceTracker.Models.Expense
 
-<h2>Add Expense</h2>
-
-<form id="expenseForm" asp-controller="Expense" asp-action="_FirstPage" method="post">
-    <div class="form-group">
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="Description" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" name="Amount" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="datetime">date:</label>
-        <input type="datetime-local" id="datetime" name="Date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="Category" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Expense</button>
-</form>
+<h2>Add Expenses</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>@(User.Identity.Name)</h3>
+    <form id="expenseForm" asp-controller="Expense" asp-action="_FirstPage" method="post">
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="Amount" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="datetime">date:</label>
+            <input type="datetime-local" id="datetime" name="Date" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="Category" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Expense</button>
+    </form>
+} else
+{
+    <h2>You have to login to add expenses</h2>
+}
 
 <script>
     $(document).ready(function () {
         $('#expenseForm').submit(function (e) {
+            console.log("Form submitted"); // For debugging
+
             e.preventDefault(); // Prevent default form submission
 
             // Serialize form data

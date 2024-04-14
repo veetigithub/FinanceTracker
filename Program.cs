@@ -9,7 +9,9 @@ builder.Services.AddControllersWithViews();
 
 Register.Initialize(builder.Configuration);
 AddExpense.Initialize(builder.Configuration);
+GetExpense.Initialize(builder.Configuration);
 LoginController.Initialize(builder.Configuration);
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

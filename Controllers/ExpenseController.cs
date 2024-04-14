@@ -15,9 +15,10 @@ namespace FinanceTracker.Controllers
         [HttpPost]
         public IActionResult _FirstPage(Expense model)
         {
-            if (User.Identity.IsAuthenticated)
+            if (model != null && User.Identity.IsAuthenticated)
             {
-                // modelstate didnt want to be valid so i reversed the if statement, GENIUS!!!
+                // Modelstate didnt want to be valid
+                // because of UserId so i reversed the if statement, GENIUS!!!
                 if (!ModelState.IsValid)
                 {
                     // get the currently logged in users username
@@ -32,17 +33,31 @@ namespace FinanceTracker.Controllers
                         Category = model.Category
                     };
                     Console.WriteLine(model.Date);
-                    AddExpense.AddExpenses(expense);
+                    
+                    if (expense.Category != null) // really bad way to just step around problems
+                    {
+                        AddExpense.AddExpenses(expense);
+                    }
+                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors)) { Console.WriteLine(error.ErrorMessage); }
+
                     return PartialView(model);
-                } else { foreach (var error in ModelState.Values.SelectMany(v => v.Errors)) { Console.WriteLine(error.ErrorMessage); } }
-            } 
-            
-            // If model state is not valid, return to the add expense form with validation errors
-            return PartialView(model);
+                }
+            }
+            return PartialView();
         }
         [HttpPost]
         public IActionResult _SecondPage()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.Identity.Name;
+                var expensesOfUser = new GetExpense();
+
+                // Retrieve expenses for the user
+                var expenses = expensesOfUser.GetExpensesOfUser(userId);
+                return PartialView(expenses);
+            }
+            
             return PartialView();
         }
         [HttpPost]
