@@ -15,20 +15,28 @@ namespace FinanceTracker.Controllers
         [HttpPost]
         public IActionResult _FirstPage(Expense model)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                var expense = new Expense
+                // modelstate didnt want to be valid so i reversed the if statement, GENIUS!!!
+                if (!ModelState.IsValid)
                 {
-                    Description = model.Description,
-                    Amount = model.Amount,
-                    Date = model.Date, // You may want to change this to allow users to specify the date
-                    CategoryId = model.CategoryId,
-                    Category = model.Category
-                };
-                Console.WriteLine(model.Date);
-                AddExpense.AddExpenses(expense); // Implement method to save expense to database
-                return PartialView(model); // Redirect to home page or another appropriate page
-            }
+                    // get the currently logged in users username
+                    string username = User.Identity.Name;
+
+                    var expense = new Expense
+                    {
+                        Description = model.Description,
+                        Amount = model.Amount,
+                        Date = model.Date,
+                        UserId = username, // and assign it to UserId
+                        Category = model.Category
+                    };
+                    Console.WriteLine(model.Date);
+                    AddExpense.AddExpenses(expense);
+                    return PartialView(model);
+                } else { foreach (var error in ModelState.Values.SelectMany(v => v.Errors)) { Console.WriteLine(error.ErrorMessage); } }
+            } 
+            
             // If model state is not valid, return to the add expense form with validation errors
             return PartialView(model);
         }

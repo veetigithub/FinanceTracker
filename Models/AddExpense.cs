@@ -41,13 +41,11 @@ namespace FinanceTracker.Models
                     var existingRecord = collection.Find(filter).FirstOrDefault();
                     if (existingRecord != null)
                     {
-                        // Username already exists, handle accordingly (e.g., return null or throw an exception)
                         return null;
                     }
                     else
                     {
                         collection.InsertOne(record);
-                        return record;
                     }
                 }
             }
@@ -55,7 +53,6 @@ namespace FinanceTracker.Models
             {
                 Console.WriteLine("Nyt kämähti :(  " + err.Message);
             }
-            Console.WriteLine("jiiihaaa");
             return record;
         }
     }
