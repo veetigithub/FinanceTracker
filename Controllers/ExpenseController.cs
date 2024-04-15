@@ -33,8 +33,9 @@ namespace FinanceTracker.Controllers
                         Category = model.Category
                     };
                     Console.WriteLine(model.Date);
-                    
-                    if (expense.Category != null) // really bad way to just step around problems
+
+                    // really bad way to just step around problems
+                    if (expense.Description != null && expense.Amount != null && expense.Date != null && expense.Category != null) 
                     {
                         AddExpense.AddExpenses(expense);
                     }

@@ -34,7 +34,7 @@ else
 
 
 <script>
-    // Prepare data (replace this with your actual data)
+    // Prepare data 
     var dates = @Html.Raw(Json.Serialize(Model.Select(e => e.Date.ToShortDateString())));
     var amounts = @Html.Raw(Json.Serialize(Model.Select(e => e.Amount)));
 
